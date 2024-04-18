@@ -6,7 +6,7 @@
 /*   By: ymakhlou <ymakhlou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:52:50 by ymakhlou          #+#    #+#             */
-/*   Updated: 2024/04/18 16:27:39 by ymakhlou         ###   ########.fr       */
+/*   Updated: 2024/04/18 18:34:00 by ymakhlou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,6 @@ int main (int ac, char **av)
                 kill(pid, SIGUSR1);
             usleep(500);
         }
-        while (j < 8)
-            sig[j++] = 0;
     }
     free(sig);
     return (0);

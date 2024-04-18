@@ -6,15 +6,15 @@
 /*   By: ymakhlou <ymakhlou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:52:43 by ymakhlou          #+#    #+#             */
-/*   Updated: 2024/04/18 16:31:06 by ymakhlou         ###   ########.fr       */
+/*   Updated: 2024/04/18 19:12:08 by ymakhlou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_talk.h"
+#include <stdio.h>
 
 void	print_design(pid_t pid)
 {
-	// ft_printf("");
 	ft_printf("                                    \n");
 	ft_printf("⊱ ─────────── {.⋅ ✯ ⋅.} ──────────── ⊰\n\n");
 	ft_printf(" .--.  .--. .---. .-..-. .--. .---. \n");
@@ -27,23 +27,31 @@ void	print_design(pid_t pid)
 	ft_printf("⊱ ─────────── {.⋅ ✯ ⋅.} ──────────── ⊰\n\n");
 }
 
-void	signal_handler_1()
+void	signal_handler(int sig)
 {
-	ft_printf("Received : 1\n");
-}
+	static int		i = 7;
+	static char		c = 0;
 
-void	signal_handler_0()
-{
-	ft_printf("Received : 0\n");
+	if (sig == SIGUSR1)
+		c += 1 << i;
+	else if (sig == SIGUSR2)
+		c += 0 << i;
+	i--;
+	if (i == -1)
+	{
+		write(1, &c, 1);
+		i = 7;
+		c = 0;
+	}
 }
 
 int main (void)
 {
 	pid_t pid = getpid();
 	print_design(pid);
-	signal(SIGUSR1, signal_handler_1);
-	signal(SIGUSR2, signal_handler_0);
     while (1)
 	{
+		signal(SIGUSR1, signal_handler);
+		signal(SIGUSR2, signal_handler);
 	}
 }
