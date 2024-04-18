@@ -1,12 +1,18 @@
-NAME = server
+NAME = libftprintf.a
 
-NAME_C = client
+SERVER = server
 
-SRC =
+CLIENT = client
 
-SRC_C =
+SRC = ft_printf/ft_putchar.c ft_printf/ft_printf.c ft_printf/ft_putnbr.c ft_printf/ft_putstr.c 
+
+SRC_S = server.c 
+
+SRC_C = client.c
 
 OBJ = $(SRC:.c=.o)
+
+OBJ_S = $(SRC_S:.c=.o)
 
 OBJ_C = $(SRC_C:.c=.o)
 
@@ -16,21 +22,24 @@ FLAG = -Wall -Wextra -Werror
 
 HEADER = mini_talk.h
 
-all: $(NAME) $(NAME_C)
+all: $(NAME) $(SERVER) $(CLIENT)
 
 %.o: %.c $(HEADER)
-	$(CC) $(FLAG) -c $<
+	$(CC) $(FLAG) -c $< -o $@ #Generate object files in the same directory as source files#
 
-$(NAME): $(OBJ)
-	$(CC) $(OBJ) -o $(NAME)
+$(NAME) : $(OBJ)
+	ar rc $(NAME) $(OBJ)
 
-$(NAME_C): $(OBJ_C)
-	$(CC) $(OBJ_C) -o $(NAME_C)
+$(SERVER): $(OBJ_S)
+	$(CC) $(NAME) $(OBJ_S) -o $(SERVER)
+
+$(CLIENT): $(OBJ_C)
+	$(CC) $(NAME) $(OBJ_C) -o $(CLIENT)
 
 clean:
-	rm -rf $(OBJ) $(OBJ_C)
+	rm -rf $(OBJ) $(OBJ_S) $(OBJ_C)
 
 fclean: clean
-	rm -rf $(NAME) $(NAME_C)
+	rm -rf $(NAME) $(SERVER) $(CLIENT)
 
 re: fclean all
