@@ -6,7 +6,7 @@
 /*   By: ymakhlou <ymakhlou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:52:43 by ymakhlou          #+#    #+#             */
-/*   Updated: 2024/04/18 13:26:23 by ymakhlou         ###   ########.fr       */
+/*   Updated: 2024/04/18 16:31:06 by ymakhlou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void	print_design(pid_t pid)
 	ft_printf(" _`, :: :__ : :.`.: `' ;: :__ : :.`.\n");
 	ft_printf("`.__.'`.__.':_;:_; `.,' `.__.':_;:_;\n");
 	ft_printf("                                    ");
-	ft_printf("\n\tMiniTalk by Ymakhlou");
 	ft_printf("\n\t     PID : %d\n", pid);
 	ft_printf("⊱ ─────────── {.⋅ ✯ ⋅.} ──────────── ⊰\n\n");
 }

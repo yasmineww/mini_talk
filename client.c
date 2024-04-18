@@ -6,7 +6,7 @@
 /*   By: ymakhlou <ymakhlou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:52:50 by ymakhlou          #+#    #+#             */
-/*   Updated: 2024/04/18 13:31:28 by ymakhlou         ###   ########.fr       */
+/*   Updated: 2024/04/18 16:27:39 by ymakhlou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,7 @@ void	print_design()
 	ft_printf(": :__ : :__ : :: :__ : :. :  : :  \n");
 	ft_printf("`.__.':___.':_;`.__.':_;:_;  :_;  \n");
 	ft_printf("                                    ");
-	ft_printf("\n\tMiniTalk by Ymakhlou\n");
-	ft_printf("⊱ ───────── {.⋅ ✯ ⋅.} ────────── ⊰\n\n");
+	ft_printf("\n⊱ ───────── {.⋅ ✯ ⋅.} ────────── ⊰\n\n");
 }
 
 int	my_atoi(char *str)
@@ -54,7 +53,6 @@ int main (int ac, char **av)
         exit(1);
     }
     i = -1;
-    j = 0;
     sig = (int *) malloc (sizeof(int) * 8);
     if (!sig)
         return (1);
@@ -62,29 +60,23 @@ int main (int ac, char **av)
     print_design();
     while (av[2][++i])
     { 
+        j = 0;
         while (j < 8)
         {
             sig[j] = av[2][i] % 2;
             av[2][i] = av[2][i] / 2;
             j++;
         }
-        // for (j = 7; j >= 0; j--) {
-        //     ft_printf("%d", sig[j]);
-        // }
         while (--j >= 0)
         {
-            // ft_printf("%d\n", sig[j]);
             if (sig[j] == 0)
-            {
                 kill(pid, SIGUSR2);
-            }
             else if (sig[j] == 1)
-            {
-                // ft_printf("ok1\n");
                 kill(pid, SIGUSR1);
-            }
             usleep(500);
         }
+        while (j < 8)
+            sig[j++] = 0;
     }
     free(sig);
     return (0);
