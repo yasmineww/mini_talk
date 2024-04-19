@@ -6,7 +6,7 @@
 /*   By: ymakhlou <ymakhlou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:52:43 by ymakhlou          #+#    #+#             */
-/*   Updated: 2024/04/18 19:12:08 by ymakhlou         ###   ########.fr       */
+/*   Updated: 2024/04/19 16:08:34 by ymakhlou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,10 @@ int main (void)
 {
 	pid_t pid = getpid();
 	print_design(pid);
+	signal(SIGUSR1, signal_handler);
+	signal(SIGUSR2, signal_handler);
     while (1)
 	{
-		signal(SIGUSR1, signal_handler);
-		signal(SIGUSR2, signal_handler);
+		pause();
 	}
 }
