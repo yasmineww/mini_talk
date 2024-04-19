@@ -6,11 +6,42 @@
 /*   By: ymakhlou <ymakhlou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:52:50 by ymakhlou          #+#    #+#             */
-/*   Updated: 2024/04/19 16:08:03 by ymakhlou         ###   ########.fr       */
+/*   Updated: 2024/04/19 23:54:19 by ymakhlou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_talk.h"
+
+void    send_signal(pid_t pid, char **av, int *sig)
+{
+    int     i;
+    int     j;
+
+    i = -1;
+    while (av[2][++i])
+    { 
+        j = -1;
+        while (++j < 8)
+        {
+            sig[j] = av[2][i] % 2;
+            av[2][i] = av[2][i] / 2;
+        }
+        while (--j >= 0)
+        {
+            if (sig[j] == 0)
+            {
+                if (kill(pid, SIGUSR2) == -1)
+                    exit(1);
+            }
+            else if (sig[j] == 1)
+            {
+                if (kill(pid, SIGUSR1) == -1)
+                    (exit(1));
+            }
+            usleep(1000);
+        }
+    }
+}
 
 void	print_design()
 {
@@ -38,13 +69,11 @@ int	my_atoi(char *str)
 		str++;
 	}
 	return (res * sign);
-}
+} 
 
 int main (int ac, char **av)
 {
     pid_t   pid;
-    int     i;
-    int     j;
     int    *sig;
 
     if (ac != 3)
@@ -52,30 +81,14 @@ int main (int ac, char **av)
         ft_printf("Invalid number of arguments");
         exit(1);
     }
-    i = -1;
+    pid = my_atoi(av[1]);
+    if (pid <= 0)
+        exit(1);
     sig = (int *) malloc (sizeof(int) * 8);
     if (!sig)
         return (1);
-    pid = my_atoi(av[1]);
     print_design();
-    while (av[2][++i])
-    { 
-        j = 0;
-        while (j < 8)
-        {
-            sig[j] = av[2][i] % 2;
-            av[2][i] = av[2][i] / 2;
-            j++;
-        }
-        while (--j >= 0)
-        {
-            if (sig[j] == 0)
-                kill(pid, SIGUSR2);
-            else if (sig[j] == 1)
-                kill(pid, SIGUSR1);
-            usleep(1000);
-        }
-    }
+    send_signal(pid, av, sig);
     free(sig);
     return (0);
 }

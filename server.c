@@ -6,12 +6,11 @@
 /*   By: ymakhlou <ymakhlou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:52:43 by ymakhlou          #+#    #+#             */
-/*   Updated: 2024/04/19 16:08:34 by ymakhlou         ###   ########.fr       */
+/*   Updated: 2024/04/19 21:06:49 by ymakhlou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_talk.h"
-#include <stdio.h>
 
 void	print_design(pid_t pid)
 {
@@ -27,11 +26,19 @@ void	print_design(pid_t pid)
 	ft_printf("⊱ ─────────── {.⋅ ✯ ⋅.} ──────────── ⊰\n\n");
 }
 
-void	signal_handler(int sig)
+void	signal_handler(int sig, siginfo_t *my_struct, void *a)
 {
 	static int		i = 7;
-	static char		c = 0;
+	static char		c;
+	static pid_t	pid;
 
+	(void)a;
+	if (my_struct->si_pid != pid)
+	{
+		pid = my_struct->si_pid;
+		i = 7;
+		c = 0;
+	}
 	if (sig == SIGUSR1)
 		c += 1 << i;
 	else if (sig == SIGUSR2)
@@ -47,12 +54,19 @@ void	signal_handler(int sig)
 
 int main (void)
 {
-	pid_t pid = getpid();
+	struct sigaction	my_struct;
+	pid_t 				pid;
+	
+	pid = getpid();
 	print_design(pid);
-	signal(SIGUSR1, signal_handler);
-	signal(SIGUSR2, signal_handler);
+	my_struct.sa_sigaction = signal_handler;
+	my_struct.sa_flags = SA_SIGINFO; ///////
     while (1)
 	{
+		if (sigaction(SIGUSR1, &my_struct, NULL) == -1)
+            exit(1);
+		if (sigaction(SIGUSR2, &my_struct, NULL) == -1)
+            exit(1);
 		pause();
 	}
 }
