@@ -6,11 +6,17 @@
 /*   By: ymakhlou <ymakhlou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:52:43 by ymakhlou          #+#    #+#             */
-/*   Updated: 2024/04/20 19:03:14 by ymakhlou         ###   ########.fr       */
+/*   Updated: 2024/04/20 19:57:17 by ymakhlou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_talk.h"
+
+void	protection(int return_type)
+{
+	if (return_type == -1)
+		exit(1);
+}
 
 void	print_design(pid_t pid)
 {

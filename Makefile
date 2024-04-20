@@ -22,7 +22,7 @@ OBJ_C = $(SRC_C:.c=.o)
 
 BONUS_S = server_bonus.c
 
-BONUS_C = client_bonus.c
+BONUS_C = client_bonus.c utils_bonus.c
 
 OBJ_BONUS_S = $(BONUS_S:.c=.o)
 

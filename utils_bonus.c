@@ -1,29 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mini_talk.h                                        :+:      :+:    :+:   */
+/*   utils_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ymakhlou <ymakhlou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/23 18:53:12 by ymakhlou          #+#    #+#             */
-/*   Updated: 2024/04/20 20:05:12 by ymakhlou         ###   ########.fr       */
+/*   Created: 2024/04/20 19:39:35 by ymakhlou          #+#    #+#             */
+/*   Updated: 2024/04/20 20:05:16 by ymakhlou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINI_TALK_H
-# define MINI_TALK_H
+#include "mini_talk.h"
 
-# include <unistd.h>
-# include <stdlib.h>
-# include <signal.h>
-# include <stdarg.h>
+void	message(int pid)
+{
+	ft_printf("Message sent successfully\n", pid);
+}
 
-int		ft_printf(const char *format, ...);
-void	ft_putchar(int c, int *size);
-void	ft_putnbr(int n, int *size);
-void	ft_putstr(char *s, int *size);
-int		my_atoi(char *str);
-void	protection(int return_type);
-void	message(int pid);
-
-#endif
+void	protection(int return_type)
+{
+	if (return_type == -1)
+		exit(1);
+}

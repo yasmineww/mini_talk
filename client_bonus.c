@@ -6,17 +6,11 @@
 /*   By: ymakhlou <ymakhlou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:52:50 by ymakhlou          #+#    #+#             */
-/*   Updated: 2024/04/20 19:02:20 by ymakhlou         ###   ########.fr       */
+/*   Updated: 2024/04/20 20:05:06 by ymakhlou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_talk.h"
-
-void	protection(int return_type)
-{
-	if (return_type == -1)
-		exit(1);
-}
 
 void	send_signal(pid_t pid, char **av, int *sig)
 {
@@ -94,6 +88,7 @@ int	main(int ac, char **av)
 	if (!sig)
 		return (1);
 	print_design();
+	signal(SIGUSR1, message);
 	send_signal(pid, av, sig);
 	free(sig);
 	return (0);
