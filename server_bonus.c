@@ -1,16 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.c                                           :+:      :+:    :+:   */
+/*   server_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ymakhlou <ymakhlou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:52:43 by ymakhlou          #+#    #+#             */
-/*   Updated: 2024/04/20 19:03:14 by ymakhlou         ###   ########.fr       */
+/*   Updated: 2024/04/20 19:02:24 by ymakhlou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_talk.h"
+
+void	protection(int return_type)
+{
+	if (return_type == -1)
+		exit(1);
+}
 
 void	print_design(pid_t pid)
 {
@@ -29,7 +35,7 @@ void	print_design(pid_t pid)
 void	signal_handler(int sig, siginfo_t *my_struct, void *a)
 {
 	static int		i = 7;
-	static char		c;
+	static int		c;
 	static pid_t	pid;
 
 	(void)a;
@@ -46,6 +52,8 @@ void	signal_handler(int sig, siginfo_t *my_struct, void *a)
 	i--;
 	if (i == -1)
 	{
+		if (c == '\0')
+			protection(kill(pid, SIGUSR2));
 		write(1, &c, 1);
 		i = 7;
 		c = 0;

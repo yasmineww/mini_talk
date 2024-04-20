@@ -6,7 +6,7 @@
 /*   By: ymakhlou <ymakhlou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:53:12 by ymakhlou          #+#    #+#             */
-/*   Updated: 2024/04/17 18:09:46 by ymakhlou         ###   ########.fr       */
+/*   Updated: 2024/04/20 19:00:07 by ymakhlou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,6 @@ void	ft_putchar(int c, int *size);
 void	ft_putnbr(int n, int *size);
 void	ft_putstr(char *s, int *size);
 int     my_atoi(char *str);
+void	protection(int return_type);
 
 #endif

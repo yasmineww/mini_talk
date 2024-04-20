@@ -1,18 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client.c                                           :+:      :+:    :+:   */
+/*   client_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ymakhlou <ymakhlou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:52:50 by ymakhlou          #+#    #+#             */
-/*   Updated: 2024/04/20 19:06:20 by ymakhlou         ###   ########.fr       */
+/*   Updated: 2024/04/20 19:02:20 by ymakhlou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_talk.h"
 
-void    send_signal(pid_t pid, char **av, int *sig)
+void	protection(int return_type)
+{
+	if (return_type == -1)
+		exit(1);
+}
+
+void	send_signal(pid_t pid, char **av, int *sig)
 {
 	int	i;
 	int	j;
@@ -33,8 +39,13 @@ void    send_signal(pid_t pid, char **av, int *sig)
 			else if (sig[j] == 1)
 				protection(kill(pid, SIGUSR1));
 			usleep(1000);
-
 		}
+	}
+	j = -1;
+	while (++j < 8)
+	{
+		protection(kill(pid, SIGUSR2));
+		usleep(1000);
 	}
 }
 
