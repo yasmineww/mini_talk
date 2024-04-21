@@ -6,11 +6,23 @@
 /*   By: ymakhlou <ymakhlou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:52:50 by ymakhlou          #+#    #+#             */
-/*   Updated: 2024/04/20 20:18:33 by ymakhlou         ###   ########.fr       */
+/*   Updated: 2024/04/21 20:02:43 by ymakhlou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_talk.h"
+
+void	end_of_line(pid_t pid)
+{
+	int	j;
+
+	j = -1;
+	while (++j < 8)
+	{
+		protection(kill(pid, SIGUSR2));
+		usleep(700);
+	}
+}
 
 void	send_signal(pid_t pid, unsigned char **av, int *sig)
 {
@@ -32,15 +44,10 @@ void	send_signal(pid_t pid, unsigned char **av, int *sig)
 				protection(kill(pid, SIGUSR2));
 			else if (sig[j] == 1)
 				protection(kill(pid, SIGUSR1));
-			usleep(800);
+			usleep(700);
 		}
 	}
-	j = -1;
-	while (++j < 8)
-	{
-		protection(kill(pid, SIGUSR2));
-		usleep(800);
-	}
+	end_of_line(pid);
 }
 
 void	print_design(void)

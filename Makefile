@@ -42,17 +42,17 @@ bonus: $(NAME) $(SERVER_B) $(CLIENT_B)
 $(NAME) : $(OBJ)
 	ar rc $(NAME) $(OBJ)
 
-$(CLIENT_B): $(OBJ_BONUS_C)
-	$(CC) $(NAME) $(OBJ_BONUS_C) -o $(CLIENT_B)
-
-$(SERVER_B): $(OBJ_BONUS_S)
-	$(CC) $(NAME) $(OBJ_BONUS_S) -o $(SERVER_B)
-
 $(SERVER): $(OBJ_S)
 	$(CC) $(FLAG) $(NAME) $(OBJ_S) -o $(SERVER)
 
 $(CLIENT): $(OBJ_C)
 	$(CC) $(FLAG) $(NAME) $(OBJ_C) -o $(CLIENT)
+
+$(CLIENT_B): $(OBJ_BONUS_C)
+	$(CC) $(NAME) $(OBJ_BONUS_C) -o $(CLIENT_B)
+
+$(SERVER_B): $(OBJ_BONUS_S)
+	$(CC) $(NAME) $(OBJ_BONUS_S) -o $(SERVER_B)
 
 clean:
 	rm -rf $(OBJ) $(OBJ_S) $(OBJ_C) $(OBJ_BONUS_S) $(OBJ_BONUS_C)

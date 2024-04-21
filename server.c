@@ -6,7 +6,7 @@
 /*   By: ymakhlou <ymakhlou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:52:43 by ymakhlou          #+#    #+#             */
-/*   Updated: 2024/04/20 19:57:17 by ymakhlou         ###   ########.fr       */
+/*   Updated: 2024/04/21 20:05:11 by ymakhlou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	main(void)
 	pid = getpid();
 	print_design(pid);
 	my_struct.sa_sigaction = signal_handler;
-	my_struct.sa_flags = SA_SIGINFO; ///////
+	my_struct.sa_flags = SA_SIGINFO;
 	while (1)
 	{
 		protection(sigaction(SIGUSR1, &my_struct, NULL));
