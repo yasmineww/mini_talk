@@ -6,7 +6,7 @@
 /*   By: ymakhlou <ymakhlou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:52:43 by ymakhlou          #+#    #+#             */
-/*   Updated: 2024/04/22 19:03:14 by ymakhlou         ###   ########.fr       */
+/*   Updated: 2024/04/22 22:49:40 by ymakhlou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,26 @@ void	print_design(pid_t pid)
 	ft_printf("⊱ ─────────── {.⋅ ✯ ⋅.} ──────────── ⊰\n\n");
 }
 
+void	function(pid_t *pid,unsigned char *c, int *size, int *buf_index)
+{
+	static char				buffer[4];
+
+	buffer[(*buf_index)++] = *c;
+	if (*buf_index == *size)
+	{
+		write(1, buffer, *size);
+		*buf_index = 0;
+	}
+	if (*c == '\0')
+		protection(kill(*pid, SIGUSR1));
+}
+
 void	signal_handler(int sig, siginfo_t *my_struct, void *a)
 {
 	static int				i = 7;
 	static unsigned char	c;
 	static pid_t			pid;
 	static int				buf_index;
-	static char				buffer[4];
 	static int				size;
 
 	(void)a;
@@ -64,14 +77,7 @@ void	signal_handler(int sig, siginfo_t *my_struct, void *a)
 		size = 4;
 	if (i == -1)
 	{
-		buffer[buf_index++] = c;
-		if (buf_index == size)
-		{
-			write(1, buffer, size);
-			buf_index = 0;
-		}
-		if (c == '\0')
-			protection(kill(pid, SIGUSR1));
+		function(&pid, &c, &size, &buf_index);
 		i = 7;
 		c = 0;
 	}
