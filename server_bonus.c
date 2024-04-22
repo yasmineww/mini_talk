@@ -6,7 +6,7 @@
 /*   By: ymakhlou <ymakhlou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:52:43 by ymakhlou          #+#    #+#             */
-/*   Updated: 2024/04/21 20:06:07 by ymakhlou         ###   ########.fr       */
+/*   Updated: 2024/04/22 12:39:22 by ymakhlou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ void	signal_handler(int sig, siginfo_t *my_struct, void *a)
 	static int		i = 7;
 	static char		c;
 	static pid_t	pid;
+	static int		buf_index;
+	static char		buffer[4];
 
 	(void)a;
 	if (my_struct->si_pid != pid)
@@ -44,6 +46,7 @@ void	signal_handler(int sig, siginfo_t *my_struct, void *a)
 		pid = my_struct->si_pid;
 		i = 7;
 		c = 0;
+		buf_index = 0;
 	}
 	if (sig == SIGUSR1)
 		c += 1 << i;
@@ -52,11 +55,50 @@ void	signal_handler(int sig, siginfo_t *my_struct, void *a)
 	i--;
 	if (i == -1)
 	{
-		if (c == '\0')
-			protection(kill(pid, SIGUSR1));
-		write(1, &c, 1);
-		i = 7;
-		c = 0;
+		if (((unsigned char)c >= 192 && (unsigned char)c <= 223)
+			|| buf_index != 0)
+		{
+			buffer[buf_index++] = c;
+			i = 7;
+			c = 0;
+			if (buf_index == 2)
+			{
+				write(1, buffer, 2);
+				buf_index = 0;
+			}
+		}
+		else if (((unsigned char)c >= 224 && (unsigned char)c <= 239)
+			|| buf_index != 0)
+		{
+			buffer[buf_index++] = c;
+			i = 7;
+			c = 0;
+			if (buf_index == 3)
+			{
+				write(1, buffer, 3);
+				buf_index = 0;
+			}
+		}
+		else if (((unsigned char)c >= 240 && (unsigned char)c <= 244)
+			|| buf_index != 0)
+		{
+			buffer[buf_index++] = c;
+			i = 7;
+			c = 0;
+			if (buf_index == 4)
+			{
+				write(1, buffer, 4);
+				buf_index = 0;
+			}
+		}
+		else
+		{
+			if (c == '\0')
+				protection(kill(pid, SIGUSR1));
+			write(1, &c, 1);
+			i = 7;
+			c = 0;
+		}
 	}
 }
 
