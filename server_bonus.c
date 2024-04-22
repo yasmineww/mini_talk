@@ -6,7 +6,7 @@
 /*   By: ymakhlou <ymakhlou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:52:43 by ymakhlou          #+#    #+#             */
-/*   Updated: 2024/04/22 12:39:22 by ymakhlou         ###   ########.fr       */
+/*   Updated: 2024/04/22 19:03:14 by ymakhlou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,12 @@ void	print_design(pid_t pid)
 
 void	signal_handler(int sig, siginfo_t *my_struct, void *a)
 {
-	static int		i = 7;
-	static char		c;
-	static pid_t	pid;
-	static int		buf_index;
-	static char		buffer[4];
+	static int				i = 7;
+	static unsigned char	c;
+	static pid_t			pid;
+	static int				buf_index;
+	static char				buffer[4];
+	static int				size;
 
 	(void)a;
 	if (my_struct->si_pid != pid)
@@ -53,52 +54,26 @@ void	signal_handler(int sig, siginfo_t *my_struct, void *a)
 	else if (sig == SIGUSR2)
 		c += 0 << i;
 	i--;
+	if (c >= 0 && c <= 127)
+		size = 1;
+	else if (c >= 192 && c <= 223)
+		size = 2;
+	else if (c >= 224 && c <= 239)
+		size = 3;
+	else if (c >= 240 && c <= 244)
+		size = 4;
 	if (i == -1)
 	{
-		if (((unsigned char)c >= 192 && (unsigned char)c <= 223)
-			|| buf_index != 0)
+		buffer[buf_index++] = c;
+		if (buf_index == size)
 		{
-			buffer[buf_index++] = c;
-			i = 7;
-			c = 0;
-			if (buf_index == 2)
-			{
-				write(1, buffer, 2);
-				buf_index = 0;
-			}
+			write(1, buffer, size);
+			buf_index = 0;
 		}
-		else if (((unsigned char)c >= 224 && (unsigned char)c <= 239)
-			|| buf_index != 0)
-		{
-			buffer[buf_index++] = c;
-			i = 7;
-			c = 0;
-			if (buf_index == 3)
-			{
-				write(1, buffer, 3);
-				buf_index = 0;
-			}
-		}
-		else if (((unsigned char)c >= 240 && (unsigned char)c <= 244)
-			|| buf_index != 0)
-		{
-			buffer[buf_index++] = c;
-			i = 7;
-			c = 0;
-			if (buf_index == 4)
-			{
-				write(1, buffer, 4);
-				buf_index = 0;
-			}
-		}
-		else
-		{
-			if (c == '\0')
-				protection(kill(pid, SIGUSR1));
-			write(1, &c, 1);
-			i = 7;
-			c = 0;
-		}
+		if (c == '\0')
+			protection(kill(pid, SIGUSR1));
+		i = 7;
+		c = 0;
 	}
 }
 
