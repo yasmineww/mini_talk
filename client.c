@@ -6,7 +6,7 @@
 /*   By: ymakhlou <ymakhlou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:52:50 by ymakhlou          #+#    #+#             */
-/*   Updated: 2024/04/20 20:21:51 by ymakhlou         ###   ########.fr       */
+/*   Updated: 2024/04/25 12:12:51 by ymakhlou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ void	send_signal(pid_t pid, char **av, int *sig)
 				protection(kill(pid, SIGUSR2));
 			else if (sig[j] == 1)
 				protection(kill(pid, SIGUSR1));
-			usleep(700);
+			usleep(200);
+			usleep(200);
 		}
 	}
 }

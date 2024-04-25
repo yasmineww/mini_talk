@@ -6,7 +6,7 @@
 /*   By: ymakhlou <ymakhlou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:52:43 by ymakhlou          #+#    #+#             */
-/*   Updated: 2024/04/21 20:05:11 by ymakhlou         ###   ########.fr       */
+/*   Updated: 2024/04/25 12:12:23 by ymakhlou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,6 @@ void	signal_handler(int sig, siginfo_t *my_struct, void *a)
 	}
 	if (sig == SIGUSR1)
 		c += 1 << i;
-	else if (sig == SIGUSR2)
-		c += 0 << i;
 	i--;
 	if (i == -1)
 	{
@@ -67,10 +65,8 @@ int	main(void)
 	print_design(pid);
 	my_struct.sa_sigaction = signal_handler;
 	my_struct.sa_flags = SA_SIGINFO;
+	protection(sigaction(SIGUSR1, &my_struct, NULL));
+	protection(sigaction(SIGUSR2, &my_struct, NULL));
 	while (1)
-	{
-		protection(sigaction(SIGUSR1, &my_struct, NULL));
-		protection(sigaction(SIGUSR2, &my_struct, NULL));
 		pause();
-	}
 }
